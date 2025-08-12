@@ -162,10 +162,10 @@ RUN export XCB_PROTO_VERSION="1.17.0" && \
     cd .. && \
     rm -rf xcb-proto-${XCB_PROTO_VERSION}.tar.xz xcb-proto-${XCB_PROTO_VERSION} libxcb-${LIBXCB_VERSION}.tar.xz libxcb-${LIBXCB_VERSION} xcb-util-${XCB_UTIL_VERSION}.tar.xz xcb-util-${XCB_UTIL_VERSION} xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.xz xcb-util-image-${XCB_UTIL_IMAGE_VERSION} xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.xz xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION} xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.xz xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.xz xcb-util-wm-${XCB_UTIL_WM_VERSION} xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.xz xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} xcb-util-errors-${XCB_UTIL_ERRORS_VERSION}.tar.xz xcb-util-errors-${XCB_UTIL_ERRORS_VERSION}
 
-RUN export OPENSSL_VERSION="3.5.1" && \
-    export OPENSSL_DEBIAN_VERSION="3.5.1-1" && \
+RUN export OPENSSL_VERSION="3.5.2" && \
+    export OPENSSL_DEBIAN_VERSION="${OPENSSL_VERSION}-1" && \
     wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
-    wget --no-check-certificate https://snapshot.debian.org/archive/debian/20250713T142600Z/pool/main/o/openssl/openssl_${OPENSSL_DEBIAN_VERSION}.debian.tar.xz && \
+    wget --no-check-certificate https://snapshot.debian.org/archive/debian/20250810T151828Z/pool/main/o/openssl/openssl_${OPENSSL_DEBIAN_VERSION}.debian.tar.xz && \
     tar -xvpf openssl-${OPENSSL_VERSION}.tar.gz && \
     tar -xvpf openssl_${OPENSSL_DEBIAN_VERSION}.debian.tar.xz && \
     cd openssl-${OPENSSL_VERSION} && \
@@ -177,7 +177,7 @@ RUN export OPENSSL_VERSION="3.5.1" && \
     cd .. && \
     rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION} openssl_${OPENSSL_DEBIAN_VERSION}.debian.tar.xz debian
 
-RUN ICU_VERSION="76_1" && \
+RUN ICU_VERSION="77_1" && \
     wget --no-check-certificate https://github.com/unicode-org/icu/releases/download/release-$(echo ${ICU_VERSION} | sed 's|_|-|g')/icu4c-${ICU_VERSION}-src.tgz && \
     tar -xvpf icu4c-${ICU_VERSION}-src.tgz && \
     cd icu/source && \
@@ -194,7 +194,7 @@ RUN ICU_VERSION="76_1" && \
     cd ../.. && \
     rm -rf icu icu4c-${ICU_VERSION}-src.tgz
 
-RUN export QT_VERSION="6.8.3" && \
+RUN export QT_VERSION="6.9.1" && \
     export QT_ARCHIVE_PATH="archive/qt/$(echo ${QT_VERSION} | sed 's|\([0-9]*\.[0-9]*\)\..*|\1|')/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz" && \
     wget --no-check-certificate --tries=1 "https://download.qt.io/${QT_ARCHIVE_PATH}" || \
     wget --no-check-certificate --tries=1 "https://qt-mirror.dannhauer.de/${QT_ARCHIVE_PATH}" || \
@@ -205,9 +205,6 @@ RUN export QT_VERSION="6.8.3" && \
     echo 'target_link_libraries(XcbQpaPrivate PRIVATE XCB::UTIL -lXau -lXdmcp)' >> qtbase/src/plugins/platforms/xcb/CMakeLists.txt && \
     echo 'target_link_libraries(Network PRIVATE ${CMAKE_DL_LIBS})' >> qtbase/src/network/CMakeLists.txt && \
     echo 'target_link_libraries(GstreamerMediaPluginImplPrivate PRIVATE -lXau -lXdmcp)' >> qtmultimedia/src/plugins/multimedia/gstreamer/CMakeLists.txt && \
-    cd qtbase && \
-    wget --no-check-certificate https://github.com/qt/qtbase/commit/30d2cc9f2ebf42af5982962c4f50ffb124189e54.diff -O - | patch -p1 && \
-    cd .. && \
     mkdir build && \
     cd build && \
     ../configure -prefix /opt/qt6 -opensource -confirm-license \
