@@ -23,7 +23,7 @@ ENV PATH="/opt/clang/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/opt/clang/lib:/opt/qt6/lib:/opt/icu/lib"
 ENV LANG="C.UTF-8"
 
-RUN export CMAKE_VERSION="3.31.8" && \
+RUN export CMAKE_VERSION="4.1.0" && \
     wget --no-check-certificate https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz && \
     tar -xvpf cmake-${CMAKE_VERSION}.tar.gz && \
     cd cmake-${CMAKE_VERSION} && \
@@ -49,7 +49,7 @@ RUN export NINJA_VERSION="1.13.1" && \
     cd .. && \
     rm -rf v${NINJA_VERSION}.tar.gz ninja-${NINJA_VERSION}
 
-RUN export CLANG_VERSION="20.1.8" && \
+RUN export CLANG_VERSION="21.1.0" && \
     wget --no-check-certificate https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${CLANG_VERSION}.tar.gz && \
     tar -xvpf llvmorg-${CLANG_VERSION}.tar.gz && \
     cd llvm-project-llvmorg-${CLANG_VERSION} && \
@@ -194,7 +194,7 @@ RUN ICU_VERSION="77_1" && \
     cd ../.. && \
     rm -rf icu icu4c-${ICU_VERSION}-src.tgz
 
-RUN export QT_VERSION="6.9.1" && \
+RUN export QT_VERSION="6.9.2" && \
     export QT_ARCHIVE_PATH="archive/qt/$(echo ${QT_VERSION} | sed 's|\([0-9]*\.[0-9]*\)\..*|\1|')/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz" && \
     wget --no-check-certificate --tries=1 "https://download.qt.io/${QT_ARCHIVE_PATH}" || \
     wget --no-check-certificate --tries=1 "https://qt-mirror.dannhauer.de/${QT_ARCHIVE_PATH}" || \
@@ -222,8 +222,9 @@ RUN export QT_VERSION="6.9.1" && \
         -no-sql-db2 -no-sql-ibase -no-sql-mysql -no-sql-oci -no-sql-odbc -no-sql-psql -sql-sqlite -qt-sqlite \
         -qt-tiff -qt-webp \
         -pulseaudio -gstreamer yes \
+        -qt-openxr \
         -- -Wno-dev -DOpenGL_GL_PREFERENCE=LEGACY \
-        -DQT_FEATURE_optimize_full=ON -DQT_FEATURE_clangcpp=OFF -DQT_FEATURE_clang=OFF -DQT_FEATURE_ffmpeg=OFF \
+        -DQT_FEATURE_optimize_full=ON -DQT_FEATURE_clangcpp=OFF -DQT_FEATURE_clang=OFF -DQT_FEATURE_ffmpeg=OFF -DQT_FEATURE_brotli=OFF \
         -DCMAKE_PREFIX_PATH="/opt/openssl;/opt/xcb;/opt/icu" -DQT_FEATURE_openssl_linked=ON -DQT_FEATURE_xkbcommon_x11=ON -DTEST_xcb_syslibs=ON \
         && \
     cmake --build . --parallel && \
@@ -282,6 +283,7 @@ RUN export QGNOMEPLATFORM_COMMIT="d86d6baab74c3e69094083715ffef4aef2e516dd" && \
     cmake -S . -B build \
         -G "Ninja" \
         -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
         -DCMAKE_PREFIX_PATH=/opt/qt6 \
         -DCMAKE_INSTALL_PREFIX=/opt/qt6 \
         -DCMAKE_C_COMPILER="/opt/clang/bin/clang" \
@@ -343,6 +345,7 @@ RUN export LINUXDEPLOYQT_COMMIT="0393b8487bdb552738bc8f89114959f025ef68c3" && \
     cmake -S . -B build \
         -G "Ninja" \
         -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
         -DCMAKE_PREFIX_PATH=/opt/qt6 \
         -DCMAKE_C_COMPILER="/opt/clang/bin/clang" \
         -DCMAKE_CXX_COMPILER="/opt/clang/bin/clang++" \
