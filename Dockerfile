@@ -23,7 +23,7 @@ ENV PATH="/opt/clang/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/opt/clang/lib:/opt/qt6/lib:/opt/icu/lib"
 ENV LANG="C.UTF-8"
 
-RUN export CMAKE_VERSION="4.1.0" && \
+RUN export CMAKE_VERSION="4.1.2" && \
     wget --no-check-certificate https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz && \
     tar -xvpf cmake-${CMAKE_VERSION}.tar.gz && \
     cd cmake-${CMAKE_VERSION} && \
@@ -49,7 +49,7 @@ RUN export NINJA_VERSION="1.13.1" && \
     cd .. && \
     rm -rf v${NINJA_VERSION}.tar.gz ninja-${NINJA_VERSION}
 
-RUN export CLANG_VERSION="21.1.0" && \
+RUN export CLANG_VERSION="21.1.2" && \
     wget --no-check-certificate https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${CLANG_VERSION}.tar.gz && \
     tar -xvpf llvmorg-${CLANG_VERSION}.tar.gz && \
     cd llvm-project-llvmorg-${CLANG_VERSION} && \
@@ -94,7 +94,7 @@ RUN export XCB_PROTO_VERSION="1.17.0" && \
     export XCB_UTIL_KEYSYMS_VERSION="0.4.1" && \
     export XCB_UTIL_RENDERUTIL_VERSION="0.3.10" && \
     export XCB_UTIL_WM_VERSION="0.4.2" && \
-    export XCB_UTIL_CURSOR_VERSION="0.1.5" && \
+    export XCB_UTIL_CURSOR_VERSION="0.1.6" && \
     export XCB_UTIL_ERRORS_VERSION="1.0.1" && \
     wget --no-check-certificate https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-${XCB_PROTO_VERSION}.tar.xz && \
     tar -xvpf xcb-proto-${XCB_PROTO_VERSION}.tar.xz && \
@@ -162,20 +162,16 @@ RUN export XCB_PROTO_VERSION="1.17.0" && \
     cd .. && \
     rm -rf xcb-proto-${XCB_PROTO_VERSION}.tar.xz xcb-proto-${XCB_PROTO_VERSION} libxcb-${LIBXCB_VERSION}.tar.xz libxcb-${LIBXCB_VERSION} xcb-util-${XCB_UTIL_VERSION}.tar.xz xcb-util-${XCB_UTIL_VERSION} xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.xz xcb-util-image-${XCB_UTIL_IMAGE_VERSION} xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.xz xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION} xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.xz xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.xz xcb-util-wm-${XCB_UTIL_WM_VERSION} xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.xz xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} xcb-util-errors-${XCB_UTIL_ERRORS_VERSION}.tar.xz xcb-util-errors-${XCB_UTIL_ERRORS_VERSION}
 
-RUN export OPENSSL_VERSION="3.5.2" && \
-    export OPENSSL_DEBIAN_VERSION="${OPENSSL_VERSION}-1" && \
+RUN export OPENSSL_VERSION="3.5.4" && \
     wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
-    wget --no-check-certificate https://snapshot.debian.org/archive/debian/20250810T151828Z/pool/main/o/openssl/openssl_${OPENSSL_DEBIAN_VERSION}.debian.tar.xz && \
     tar -xvpf openssl-${OPENSSL_VERSION}.tar.gz && \
-    tar -xvpf openssl_${OPENSSL_DEBIAN_VERSION}.debian.tar.xz && \
     cd openssl-${OPENSSL_VERSION} && \
-    patch -p1 -i ../debian/patches/pic.patch && \
     ./Configure linux-$(gcc -dumpmachine | sed 's|-.*||' | sed 's|^arm$|armv4| ; s|^powerpc64le$|ppc64le|') --prefix=/opt/openssl --openssldir=/etc/ssl zlib no-shared && \
     make depend && \
     make -j$(getconf _NPROCESSORS_ONLN) && \
     make install && \
     cd .. && \
-    rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION} openssl_${OPENSSL_DEBIAN_VERSION}.debian.tar.xz debian
+    rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION}
 
 RUN ICU_VERSION="77_1" && \
     wget --no-check-certificate https://github.com/unicode-org/icu/releases/download/release-$(echo ${ICU_VERSION} | sed 's|_|-|g')/icu4c-${ICU_VERSION}-src.tgz && \
@@ -194,7 +190,7 @@ RUN ICU_VERSION="77_1" && \
     cd ../.. && \
     rm -rf icu icu4c-${ICU_VERSION}-src.tgz
 
-RUN export QT_VERSION="6.9.2" && \
+RUN export QT_VERSION="6.9.3" && \
     export QT_ARCHIVE_PATH="archive/qt/$(echo ${QT_VERSION} | sed 's|\([0-9]*\.[0-9]*\)\..*|\1|')/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz" && \
     wget --no-check-certificate --tries=1 "https://download.qt.io/${QT_ARCHIVE_PATH}" || \
     wget --no-check-certificate --tries=1 "https://qt-mirror.dannhauer.de/${QT_ARCHIVE_PATH}" || \
@@ -232,10 +228,11 @@ RUN export QT_VERSION="6.9.2" && \
     cd ../.. && \
     rm -rf qt-everywhere-src-${QT_VERSION}.tar.xz qt-everywhere-src-${QT_VERSION}
 
-RUN export QT6GTK2_COMMIT="b555e88ac81a765832b97b1b13878182c41be111" && \
+RUN export QT6GTK2_COMMIT="1ea72f05ba9f42c1af5302565e1bde992b438698" && \
     wget --no-check-certificate https://www.opencode.net/trialuser/qt6gtk2/-/archive/${QT6GTK2_COMMIT}/qt6gtk2-${QT6GTK2_COMMIT}.tar.gz && \
     tar -xvpf qt6gtk2-${QT6GTK2_COMMIT}.tar.gz && \
     cd qt6gtk2-${QT6GTK2_COMMIT} && \
+    sed -i 's|\(newSize =.*"GtkSpinButton".*;\)|//\1|' src/qt6gtk2-style/qgtkstyle.cpp && \
     mkdir build && \
     cd build && \
     /opt/qt6/bin/qmake -r CONFIG+=release ../qt6gtk2.pro && \
@@ -244,7 +241,7 @@ RUN export QT6GTK2_COMMIT="b555e88ac81a765832b97b1b13878182c41be111" && \
     cd ../.. && \
     rm -rf qt6gtk2-${QT6GTK2_COMMIT}.tar.gz qt6gtk2-${QT6GTK2_COMMIT}
 
-RUN export QT6CT_COMMIT="23a985f45cf793ce7ce05811411d2374b4f979c4" && \
+RUN export QT6CT_COMMIT="00823e41aa60e8fe266d5aee328e82ad1ad94348" && \
     wget --no-check-certificate https://www.opencode.net/trialuser/qt6ct/-/archive/${QT6CT_COMMIT}/qt6ct-${QT6CT_COMMIT}.tar.gz && \
     tar -xvpf qt6ct-${QT6CT_COMMIT}.tar.gz && \
     cd qt6ct-${QT6CT_COMMIT} && \
@@ -297,7 +294,7 @@ RUN export QGNOMEPLATFORM_COMMIT="d86d6baab74c3e69094083715ffef4aef2e516dd" && \
     cd .. && \
     rm -rf ${QGNOMEPLATFORM_COMMIT}.tar.gz QGnomePlatform-${QGNOMEPLATFORM_COMMIT}
 
-RUN export QADWAITA_DECORATIONS_COMMIT="d70c24a745e2f2195222400f901cb3a9296f28b5" && \
+RUN export QADWAITA_DECORATIONS_COMMIT="37e1278474168ad4d37cb61856711ba5eb559bc2" && \
     wget --no-check-certificate https://github.com/FedoraQt/QAdwaitaDecorations/archive/${QADWAITA_DECORATIONS_COMMIT}.tar.gz && \
     tar -xvpf ${QADWAITA_DECORATIONS_COMMIT}.tar.gz && \
     cd QAdwaitaDecorations-${QADWAITA_DECORATIONS_COMMIT} && \
