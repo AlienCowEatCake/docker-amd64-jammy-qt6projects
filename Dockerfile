@@ -23,7 +23,7 @@ ENV PATH="/opt/clang/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/opt/clang/lib:/opt/qt6/lib:/opt/icu/lib"
 ENV LANG="C.UTF-8"
 
-RUN export CMAKE_VERSION="4.2.2" && \
+RUN export CMAKE_VERSION="4.2.3" && \
     wget --no-check-certificate https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz && \
     tar -xvpf cmake-${CMAKE_VERSION}.tar.gz && \
     cd cmake-${CMAKE_VERSION} && \
@@ -162,7 +162,7 @@ RUN export XCB_PROTO_VERSION="1.17.0" && \
     cd .. && \
     rm -rf xcb-proto-${XCB_PROTO_VERSION}.tar.xz xcb-proto-${XCB_PROTO_VERSION} libxcb-${LIBXCB_VERSION}.tar.xz libxcb-${LIBXCB_VERSION} xcb-util-${XCB_UTIL_VERSION}.tar.xz xcb-util-${XCB_UTIL_VERSION} xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.xz xcb-util-image-${XCB_UTIL_IMAGE_VERSION} xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.xz xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION} xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.xz xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.xz xcb-util-wm-${XCB_UTIL_WM_VERSION} xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.xz xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} xcb-util-errors-${XCB_UTIL_ERRORS_VERSION}.tar.xz xcb-util-errors-${XCB_UTIL_ERRORS_VERSION}
 
-RUN export OPENSSL_VERSION="3.6.0" && \
+RUN export OPENSSL_VERSION="3.6.1" && \
     wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
     tar -xvpf openssl-${OPENSSL_VERSION}.tar.gz && \
     cd openssl-${OPENSSL_VERSION} && \
@@ -190,7 +190,7 @@ RUN ICU_VERSION="78.2" && \
     cd ../.. && \
     rm -rf icu icu4c-${ICU_VERSION}-sources.tgz
 
-RUN export QT_VERSION="6.10.1" && \
+RUN export QT_VERSION="6.10.2" && \
     export QT_ARCHIVE_PATH="archive/qt/$(echo ${QT_VERSION} | sed 's|\([0-9]*\.[0-9]*\)\..*|\1|')/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz" && \
     wget --no-check-certificate --tries=1 "https://download.qt.io/${QT_ARCHIVE_PATH}" || \
     wget --no-check-certificate --tries=1 "https://mirror.accum.se/mirror/qt.io/qtproject/${QT_ARCHIVE_PATH}" || \
@@ -229,7 +229,7 @@ RUN export QT_VERSION="6.10.1" && \
     rm -rf qt-everywhere-src-${QT_VERSION}.tar.xz qt-everywhere-src-${QT_VERSION}
 
 RUN export QT6GTK2_COMMIT="38ce539b2452f0799fc6940288dbae6a4f2f0337" && \
-    wget --continue --tries=20 --read-timeout=30 --no-check-certificate https://www.opencode.net/trialuser/qt6gtk2/-/archive/${QT6GTK2_COMMIT}/qt6gtk2-${QT6GTK2_COMMIT}.tar.gz && \
+    wget --no-check-certificate -O qt6gtk2-${QT6GTK2_COMMIT}.tar.gz https://github.com/AlienCowEatCake/qt6gtk2/archive/${QT6GTK2_COMMIT}.tar.gz && \
     tar -xvpf qt6gtk2-${QT6GTK2_COMMIT}.tar.gz && \
     cd qt6gtk2-${QT6GTK2_COMMIT} && \
     sed -i 's|\(newSize =.*"GtkSpinButton".*;\)|//\1|' src/qt6gtk2-style/qgtkstyle.cpp && \
@@ -242,7 +242,7 @@ RUN export QT6GTK2_COMMIT="38ce539b2452f0799fc6940288dbae6a4f2f0337" && \
     rm -rf qt6gtk2-${QT6GTK2_COMMIT}.tar.gz qt6gtk2-${QT6GTK2_COMMIT}
 
 RUN export QT6CT_COMMIT="00823e41aa60e8fe266d5aee328e82ad1ad94348" && \
-    wget --continue --tries=20 --read-timeout=30 --no-check-certificate https://www.opencode.net/trialuser/qt6ct/-/archive/${QT6CT_COMMIT}/qt6ct-${QT6CT_COMMIT}.tar.gz && \
+    wget --no-check-certificate -O qt6ct-${QT6CT_COMMIT}.tar.gz https://github.com/AlienCowEatCake/qt6ct/archive/${QT6CT_COMMIT}.tar.gz && \
     tar -xvpf qt6ct-${QT6CT_COMMIT}.tar.gz && \
     cd qt6ct-${QT6CT_COMMIT} && \
     mkdir build && \
