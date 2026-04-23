@@ -190,7 +190,7 @@ RUN ICU_VERSION="78.3" && \
     cd ../.. && \
     rm -rf icu icu4c-${ICU_VERSION}-sources.tgz
 
-RUN export QT_VERSION="6.10.3" && \
+RUN export QT_VERSION="6.11.0" && \
     export QT_ARCHIVE_PATH="archive/qt/$(echo ${QT_VERSION} | sed 's|\([0-9]*\.[0-9]*\)\..*|\1|')/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz" && \
     wget --no-check-certificate --tries=1 "https://download.qt.io/${QT_ARCHIVE_PATH}" || \
     wget --no-check-certificate --tries=1 "https://mirror.accum.se/mirror/qt.io/qtproject/${QT_ARCHIVE_PATH}" || \
