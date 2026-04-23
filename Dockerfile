@@ -23,7 +23,7 @@ ENV PATH="/opt/clang/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/opt/clang/lib:/opt/qt6/lib:/opt/icu/lib"
 ENV LANG="C.UTF-8"
 
-RUN export CMAKE_VERSION="4.2.3" && \
+RUN export CMAKE_VERSION="4.3.2" && \
     wget --no-check-certificate https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz && \
     tar -xvpf cmake-${CMAKE_VERSION}.tar.gz && \
     cd cmake-${CMAKE_VERSION} && \
@@ -49,7 +49,7 @@ RUN export NINJA_VERSION="1.13.2" && \
     cd .. && \
     rm -rf v${NINJA_VERSION}.tar.gz ninja-${NINJA_VERSION}
 
-RUN export CLANG_VERSION="21.1.8" && \
+RUN export CLANG_VERSION="22.1.4" && \
     wget --no-check-certificate https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${CLANG_VERSION}.tar.gz && \
     tar -xvpf llvmorg-${CLANG_VERSION}.tar.gz && \
     cd llvm-project-llvmorg-${CLANG_VERSION} && \
@@ -162,7 +162,7 @@ RUN export XCB_PROTO_VERSION="1.17.0" && \
     cd .. && \
     rm -rf xcb-proto-${XCB_PROTO_VERSION}.tar.xz xcb-proto-${XCB_PROTO_VERSION} libxcb-${LIBXCB_VERSION}.tar.xz libxcb-${LIBXCB_VERSION} xcb-util-${XCB_UTIL_VERSION}.tar.xz xcb-util-${XCB_UTIL_VERSION} xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.xz xcb-util-image-${XCB_UTIL_IMAGE_VERSION} xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.xz xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION} xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.xz xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.xz xcb-util-wm-${XCB_UTIL_WM_VERSION} xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.xz xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} xcb-util-errors-${XCB_UTIL_ERRORS_VERSION}.tar.xz xcb-util-errors-${XCB_UTIL_ERRORS_VERSION}
 
-RUN export OPENSSL_VERSION="3.6.1" && \
+RUN export OPENSSL_VERSION="3.6.2" && \
     wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
     tar -xvpf openssl-${OPENSSL_VERSION}.tar.gz && \
     cd openssl-${OPENSSL_VERSION} && \
@@ -173,7 +173,7 @@ RUN export OPENSSL_VERSION="3.6.1" && \
     cd .. && \
     rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION}
 
-RUN ICU_VERSION="78.2" && \
+RUN ICU_VERSION="78.3" && \
     wget --no-check-certificate https://github.com/unicode-org/icu/releases/download/release-${ICU_VERSION}/icu4c-${ICU_VERSION}-sources.tgz && \
     tar -xvpf icu4c-${ICU_VERSION}-sources.tgz && \
     cd icu/source && \
@@ -190,7 +190,7 @@ RUN ICU_VERSION="78.2" && \
     cd ../.. && \
     rm -rf icu icu4c-${ICU_VERSION}-sources.tgz
 
-RUN export QT_VERSION="6.10.2" && \
+RUN export QT_VERSION="6.10.3" && \
     export QT_ARCHIVE_PATH="archive/qt/$(echo ${QT_VERSION} | sed 's|\([0-9]*\.[0-9]*\)\..*|\1|')/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz" && \
     wget --no-check-certificate --tries=1 "https://download.qt.io/${QT_ARCHIVE_PATH}" || \
     wget --no-check-certificate --tries=1 "https://mirror.accum.se/mirror/qt.io/qtproject/${QT_ARCHIVE_PATH}" || \
@@ -321,7 +321,7 @@ RUN export QADWAITA_DECORATIONS_COMMIT="22a97da98a8d91021c63600250711adf4ccf11d7
 # @todo Build appimagetool and type2-runtime from source?
 RUN export APPIMAGETOOL_VERSION="continuous" && \
     export TYPE2_RUNTIME_VERSION="continuous" && \
-    export IP7ZIP_VERSION="2501" && \
+    export IP7ZIP_VERSION="2600" && \
     echo "|x86_64|arm|aarch64|" | grep -v "|$(gcc -dumpmachine | sed 's|-.*||')|" >/dev/null || ( \
     wget --no-check-certificate https://7-zip.org/a/7z${IP7ZIP_VERSION}-linux-$(gcc -dumpmachine | sed 's|-.*||' | sed 's|^x86_64$|x64| ; s|^aarch64$|arm64|').tar.xz -O 7z${IP7ZIP_VERSION}-linux.tar.xz && \
     mkdir -p 7z${IP7ZIP_VERSION}-linux && \
