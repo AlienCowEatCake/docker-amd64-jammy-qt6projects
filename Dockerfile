@@ -49,7 +49,7 @@ RUN export NINJA_VERSION="1.13.2" && \
     cd .. && \
     rm -rf v${NINJA_VERSION}.tar.gz ninja-${NINJA_VERSION}
 
-RUN export CLANG_VERSION="22.1.4" && \
+RUN export CLANG_VERSION="22.1.5" && \
     wget --no-check-certificate https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-${CLANG_VERSION}.tar.gz && \
     tar -xvpf llvmorg-${CLANG_VERSION}.tar.gz && \
     cd llvm-project-llvmorg-${CLANG_VERSION} && \
@@ -190,7 +190,7 @@ RUN ICU_VERSION="78.3" && \
     cd ../.. && \
     rm -rf icu icu4c-${ICU_VERSION}-sources.tgz
 
-RUN export QT_VERSION="6.11.0" && \
+RUN export QT_VERSION="6.11.1" && \
     export QT_ARCHIVE_PATH="archive/qt/$(echo ${QT_VERSION} | sed 's|\([0-9]*\.[0-9]*\)\..*|\1|')/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz" && \
     wget --no-check-certificate --tries=1 "https://download.qt.io/${QT_ARCHIVE_PATH}" || \
     wget --no-check-certificate --tries=1 "https://mirror.accum.se/mirror/qt.io/qtproject/${QT_ARCHIVE_PATH}" || \
@@ -321,7 +321,7 @@ RUN export QADWAITA_DECORATIONS_COMMIT="22a97da98a8d91021c63600250711adf4ccf11d7
 # @todo Build appimagetool and type2-runtime from source?
 RUN export APPIMAGETOOL_VERSION="continuous" && \
     export TYPE2_RUNTIME_VERSION="continuous" && \
-    export IP7ZIP_VERSION="2600" && \
+    export IP7ZIP_VERSION="2601" && \
     echo "|x86_64|arm|aarch64|" | grep -v "|$(gcc -dumpmachine | sed 's|-.*||')|" >/dev/null || ( \
     wget --no-check-certificate https://7-zip.org/a/7z${IP7ZIP_VERSION}-linux-$(gcc -dumpmachine | sed 's|-.*||' | sed 's|^x86_64$|x64| ; s|^aarch64$|arm64|').tar.xz -O 7z${IP7ZIP_VERSION}-linux.tar.xz && \
     mkdir -p 7z${IP7ZIP_VERSION}-linux && \
